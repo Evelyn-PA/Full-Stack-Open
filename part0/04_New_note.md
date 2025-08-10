@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
-=======
 ```mermaid
 sequenceDiagram
     participant browser
@@ -44,4 +35,3 @@ sequenceDiagram
     deactivate server
 
     Note right of browser: The browser executes the callback function that renders the notes
->>>>>>> ed1ddbdbffca76713760d75369363ad2a8dbad2d
