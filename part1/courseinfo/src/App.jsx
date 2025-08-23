@@ -6,7 +6,6 @@ const App = () => {
   const exercises2 = 7
   const part3 = 'State of a component'
   const exercises3 = 14
-  const sum = exercises1+exercises2+exercises3
 
   //Header component
   const Header = (props) => {
@@ -15,13 +14,19 @@ const App = () => {
     )
   }
 
+  //Create small component for excercise 1.2
+  const Part = (props) => {
+    return(
+      <p>{props.name} {props.exercises}</p>
+    )
+  }
   //Content component
   const Content = (props) => {
     return (
       <>
-        <p>{props.part1} {props.exercises1}</p>
-        <p>{props.part2} {props.exercises2}</p>
-        <p>{props.part3} {props.exercises3}</p>
+        <Part name={props.part1} exercises={props.exercises1}/>
+        <Part name={props.part2} exercises={props.exercises2}/>
+        <Part name={props.part3} exercises={props.exercises3}/>
       </>
 
     )
@@ -30,7 +35,7 @@ const App = () => {
   //Total component
   const Total = (props) =>{
     return (
-      <p>Number of exercises {sum}</p>
+      <p>Number of exercises {props.exercises1 + props.exercises2 + props.exercises3}</p>
     )
   }
 
@@ -43,7 +48,9 @@ const App = () => {
         part3={part3} exercises3={exercises3}
       />
       <Total
-      sum = {sum}
+      exercises1={exercises1}
+      exercises2={exercises2}
+      exercises3={exercises3}
       />
     </div>
   )
