@@ -20,13 +20,14 @@ const course = {
   //Header component
   const Header = (props) => {
     return (
-      <h1>{props.course}</h1>
+      <h1>{props.course.name}</h1>
     )
   }
 
   //Create small component for excercise 1.2
   const Part = (props) => {
     return(
+
       <p>{props.name} {props.exercises}</p>
     )
   }
@@ -42,22 +43,22 @@ const course = {
     )
   }
 
-  //Total component
-  const Total = (props) =>{
-    return (
-      <p>Number of exercises {props.part[0].exercises  + props.part[1].exercises  + props.part[2].exercises }</p>
-    )
-  }
+  // //Total component
+  // const Total = (props) =>{
+  //   return (
+  //     <p>Number of exercises {props.part[0].exercises  + props.part[1].exercises  + props.part[2].exercises }</p>
+  //   )
+  // }
 
   return (
     <div>
       <Header course={course} />
       <Content
-        part ={parts}
+        part ={course.parts}
       />
-      <Total
+      {/* <Total
         part = {parts}
-        />
+        /> */}
     </div>
   )
 }
