@@ -6,7 +6,8 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
   const total = good+neutral+bad
-  const average = total === 0? 0: (total)/3
+  const average = total === 0? 0: (good * 1 + neutral * 0 + bad * -1) / total
+  const positive = total === 0? 0: ((good/total) * 100)
 const Button = (props)=>(
   <button onClick={props.onClick}>{props.text}</button>
 )
@@ -23,6 +24,7 @@ const Button = (props)=>(
       <p>bad: {bad}</p>
       <p>Total: {total}</p>
       <p>Average: {average}</p>
+      <p>Positive: {positive}%</p>
 
     </div>
   )
