@@ -15,21 +15,28 @@ const App = () => {
     const positive = total === 0 ? 0 : ((props.good / total) * 100)
 
     return (
-      <div>
-        <StatisticLine text="good" value={good} />
-        <StatisticLine text="neutral" value={neutral} />
-        <StatisticLine text="bad" value={bad} />
-        <StatisticLine text="total" value={total} />
-        <StatisticLine text="average" value={average} />
-        <StatisticLine text="positive" value={positive} />
-      </div>
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={props.good} />
+          <StatisticLine text="neutral" value={props.neutral} />
+          <StatisticLine text="bad" value={props.bad} />
+          <StatisticLine text="all" value={total} />
+          <StatisticLine text="average" value={average} />
+          <StatisticLine text="positive" value={positive + "%"} />
+        </tbody>
+
+      </table>
 
 
     )
   }
 
   const StatisticLine = ({ text, value }) => (
-    <p>{text}: {value}</p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+
   )
   return (
     <div>
@@ -39,7 +46,8 @@ const App = () => {
       <Button onClick={() => setBad(bad + 1)} text="Bad" />
 
       <h1>Statistics</h1>
-      {good + bad + neutral === 0 ? <p>No feedback given</p> : <Statistics good={good} neutral={neutral} bad={bad} />}
+      {good + bad + neutral === 0 ? "No feedback given" :
+        (<Statistics good={good} neutral={neutral} bad={bad} />)}
     </div>
   )
 }
