@@ -15,3 +15,9 @@ button {
   flex-direction: column;
   gap: 1rem;
 }
+
+.voteBtn{
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

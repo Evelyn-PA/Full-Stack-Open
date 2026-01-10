@@ -26,15 +26,25 @@ const App = () => {
     setVote(copy)
   }
 
+  //Find the most votes index
+  const maxVotes = Math.max(...votes)
+  const mostVotesIndex = votes.indexOf(maxVotes)
+
+
 
   return (
     <div className="quotes">
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <p>Has {votes[selected]} vote{votes[selected] !== 1 ? "s" : ""}</p>
-      <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>
-        Next
-      </button>
-      <button onClick={handleVote}>Vote</button>
+      <div className='voteBtn'>
+        <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>
+          Next
+        </button>
+        <button onClick={handleVote}>Vote</button>
+      </div>
+      <h1> Anecdote with most votes</h1>
+      {maxVotes === 0? "" : anecdotes[mostVotesIndex]}
     </div>
   )
 }
