@@ -23,8 +23,7 @@ export default function Course({ course }) {
 
         )
     }
-
-    //Total component
+    const Total2 = course.parts.reduce((s, p) => s+p.exercises, 0)
     const Total = (props) => {
         return (
             <p><b>total of {props.part[0].exercises + props.part[1].exercises + props.part[2].exercises} exercises</b></p>
@@ -39,6 +38,8 @@ export default function Course({ course }) {
             <Total
                 part={course.parts}
             />
+
+            <p>Total {Total2}</p>
         </div>
     )
 }
