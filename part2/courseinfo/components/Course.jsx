@@ -1,15 +1,14 @@
 export default function Course({ course }) {
     const Header = (props) => {
         return (
-            <h1>{props.course.name}</h1>
+            <h2>{props.course.name}</h2>
         )
     }
 
     //Create small component for excercise 1.2
-    const Part = (props) => {
+    const Part = ({name,exercises}) => {
         return (
-
-            <p>{props.name} {props.exercises}</p>
+            <p>{name} {exercises}</p>
         )
     }
     //Content component
