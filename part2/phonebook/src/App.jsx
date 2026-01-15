@@ -2,16 +2,18 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: "0345129103", id: 1 }
   ])
   const [newName, setNewName] = useState('')
 
-  const addPerson = (event)=>{
+  const [newPhone, setNewPhone] = useState('')
+
+  const addPerson = (event) => {
     event.preventDefault()
-    persons.some(person => person.name === newName)? window.alert(`${newName} is already added to phoneboo`): setPersons(persons.concat({ name: newName }))
+    persons.some(person => person.name === newName) ? window.alert(`${newName} is already added to phonebook`) : setPersons(persons.concat({ name: newName, number: newPhone }))
     setNewName("")
+    setNewPhone("")
   }
-//Make condition: if the newName already in array persons => Show the alert
 
   return (
     <div>
@@ -20,13 +22,15 @@ const App = () => {
         <div>
           name: <input value={newName} onChange={(e) => setNewName(e.target.value)} />
         </div>
+        <div>number: <input value={newPhone} onChange={(p) => setNewPhone(p.target.value)} /></div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map(person => <p key={person.name}>{person.name}</p>)}
+        {persons.map(person => <p key={person.name}>{person.name} {person.number}</p>)}
+
       </ul>
       <div>debug: {newName}</div>
     </div>
