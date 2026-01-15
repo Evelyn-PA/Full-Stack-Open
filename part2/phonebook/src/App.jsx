@@ -8,9 +8,11 @@ const App = () => {
 
   const addPerson = (event)=>{
     event.preventDefault()
-    setPersons(persons.concat({ name: newName }))
-    setNewName('')
+    persons.some(person => person.name === newName)? window.alert(`${newName} is already added to phoneboo`): setPersons(persons.concat({ name: newName }))
+    setNewName("")
   }
+//Make condition: if the newName already in array persons => Show the alert
+
   return (
     <div>
       <h2>Phonebook</h2>
