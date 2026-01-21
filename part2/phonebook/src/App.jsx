@@ -38,7 +38,7 @@ const App = () => {
     personService
       .addData(newPerson)
       .then(returnedPerson => {
-        setPersons(prev=> prev.concat(returnedPerson))
+        setPersons(prev => prev.concat(returnedPerson))
         setNewName("")
         setNewPhone("")
       })
@@ -52,7 +52,7 @@ const App = () => {
       <h1>Add a new</h1>
       <PersonForm addPerson={addPerson} onNameChange={onNameChange} onPhoneChange={onPhoneChange} newName={newName} newPhone={newPhone} />
       <h2>Numbers</h2>
-      <Person filteredPerson={filteredPerson} />
+      <Person filteredPerson={filteredPerson} p={setPersons} />
     </div>
   )
 }

@@ -12,7 +12,13 @@ const addData = newObject => {
     const request = axios.post(baseURL, newObject)
     return request.then(response => response.data)
 }
+
+const deleteData = id => {
+    const request = axios.delete(`${baseURL}/${id}`)
+    return request.then(response =>response.data)
+}
 export default {
     getAll: getAll,
-    addData: addData
+    addData: addData,
+    deleteData: deleteData
 }
