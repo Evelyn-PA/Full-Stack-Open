@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from "./services/person"
 import Filter from './component/Filter'
 import PersonForm from './component/PersonForm'
 import Person from './component/Person'
@@ -13,10 +13,10 @@ const App = () => {
 
   //Apply the useEffect to fetch the data
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(personData => {
+        setPersons(personData)
       })
   }, [])
 
@@ -30,12 +30,15 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    persons.some(person => person.name === newName) ? window.alert(`${newName} is already added to phonebook`) : setPersons(persons.concat({ name: newName, number: newPhone }))
+    if (persons.some(person => person.name.trim() === newName)) {
+      window.alert(`${newName} is already added to phonebook`)
+      return
+    }
     const newPerson = { name: newName, number: newPhone }
-    axios
-      .post('http://localhost:3001/persons', newPerson)
-      .then(response => {
-        setPersons(persons.concat(response.data))
+    personService
+      .addData(newPerson)
+      .then(returnedPerson => {
+        setPersons(prev=> prev.concat(returnedPerson))
         setNewName("")
         setNewPhone("")
       })
@@ -45,7 +48,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Filter persons={persons} onFilterChange={onFilterChange} />
+      <Filter filterPerson={filterPerson} onFilterChange={onFilterChange} />
       <h1>Add a new</h1>
       <PersonForm addPerson={addPerson} onNameChange={onNameChange} onPhoneChange={onPhoneChange} newName={newName} newPhone={newPhone} />
       <h2>Numbers</h2>
