@@ -1,6 +1,11 @@
 import personService from "../services/person"
 
 export default function Person({ filteredPerson, p }) {
+    const displayConfirmation = (person) => {
+        if (confirm(`Delete ${person.name}?`)) {
+            deleteTheData(person.id)
+        }
+    }
     const deleteTheData = (id) => {
         personService
             .deleteData(id)
@@ -8,7 +13,7 @@ export default function Person({ filteredPerson, p }) {
     }
     return (
         <ul>
-            {filteredPerson.map(person => (<li key={person.id}>{person.name} {person.number} <button onClick={() => deleteTheData(person.id)}>Delete</button> </li>))}
+            {filteredPerson.map(person => (<li key={person.id}>{person.name} {person.number} <button onClick={() => displayConfirmation(person)}>Delete</button> </li>))}
 
         </ul>
     )

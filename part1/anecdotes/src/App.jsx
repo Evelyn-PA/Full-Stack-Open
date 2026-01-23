@@ -30,8 +30,6 @@ const App = () => {
   const maxVotes = Math.max(...votes)
   const mostVotesIndex = votes.indexOf(maxVotes)
 
-
-
   return (
     <div className="quotes">
       <h1>Anecdote of the day</h1>
@@ -44,7 +42,7 @@ const App = () => {
         <button onClick={handleVote}>Vote</button>
       </div>
       <h1> Anecdote with most votes</h1>
-      {maxVotes === 0? "" : anecdotes[mostVotesIndex]}
+      {maxVotes === 0 ? "" : anecdotes[mostVotesIndex]}
     </div>
   )
 }
