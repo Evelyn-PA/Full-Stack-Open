@@ -29,20 +29,36 @@ const App = () => {
   const onFilterChange = (e) => setFilterPerson(e.target.value)
 
   const addPerson = (event) => {
+    const existingPerson = persons.find(person => person.name.trim() === newName)
     event.preventDefault()
-    if (persons.some(person => person.name.trim() === newName)) {
-      window.alert(`${newName} is already added to phonebook`)
-      return
+    const updateData = (id, updatedPerson) => {
+      personService
+        .changeData(id, updatedPerson)
+        .then(()=>setPersons(prev=>prev.map(p => p.id === id ? updatedPerson : p)))
     }
-    const newPerson = { name: newName, number: newPhone }
-    personService
-      .addData(newPerson)
-      .then(returnedPerson => {
-        setPersons(prev => prev.concat(returnedPerson))
-        setNewName("")
-        setNewPhone("")
-      })
+    if (existingPerson) {
+      // window.alert(`${newName} is already added to phonebook`)
+      if (confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const updatedPerson = {
+          ...existingPerson,
+          number: newPhone
+        }
+        updateData(existingPerson.id, updatedPerson)
+      }
+      //get the number user type => print windown confirm & put the data (BE) then change to new number:
+    }
 
+    //Person not exist => Create new person object
+    else {
+      const newPerson = { name: newName, number: newPhone }
+      personService
+        .addData(newPerson)
+        .then(returnedPerson => {
+          setPersons(prev => prev.concat(returnedPerson))
+          setNewName("")
+          setNewPhone("")
+        })
+    }
   }
 
   return (

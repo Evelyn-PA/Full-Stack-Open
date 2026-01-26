@@ -13,12 +13,20 @@ const addData = newObject => {
     return request.then(response => response.data)
 }
 
+//Delete data
 const deleteData = id => {
     const request = axios.delete(`${baseURL}/${id}`)
-    return request.then(response =>response.data)
+    return request.then(response => response.data)
+}
+
+//Change or Update data 
+const changeData = (id, updatedPerson) => {
+    const request = axios.put(`${baseURL}/${id}`, updatedPerson)
+    return request.then(response => response.data)
 }
 export default {
     getAll: getAll,
     addData: addData,
-    deleteData: deleteData
+    deleteData: deleteData,
+    changeData: changeData
 }
