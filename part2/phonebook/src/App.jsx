@@ -3,13 +3,14 @@ import personService from "./services/person"
 import Filter from './component/Filter'
 import PersonForm from './component/PersonForm'
 import Person from './component/Person'
-
+import Notification from './component/Notification'
 const App = () => {
   const [persons, setPersons] = useState([])
 
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filterPerson, setFilterPerson] = useState("")
+  const [message, setMessage] = useState(null)
 
   //Apply the useEffect to fetch the data
   useEffect(() => {
@@ -34,16 +35,21 @@ const App = () => {
     const updateData = (id, updatedPerson) => {
       personService
         .changeData(id, updatedPerson)
-        .then(()=>setPersons(prev=>prev.map(p => p.id === id ? updatedPerson : p)))
+        .then(() => setPersons(prev => prev.map(p => p.id === id ? updatedPerson : p)))
     }
     if (existingPerson) {
-      // window.alert(`${newName} is already added to phonebook`)
       if (confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const updatedPerson = {
           ...existingPerson,
           number: newPhone
         }
         updateData(existingPerson.id, updatedPerson)
+        setMessage(`The number of ${existingPerson.name} changed to ${newPhone}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 1000)
+        setNewName("")
+        setNewPhone("")
       }
       //get the number user type => print windown confirm & put the data (BE) then change to new number:
     }
@@ -57,6 +63,10 @@ const App = () => {
           setPersons(prev => prev.concat(returnedPerson))
           setNewName("")
           setNewPhone("")
+          setMessage(`Added ${newPerson.name}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 1000)
         })
     }
   }
@@ -64,6 +74,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message} />
       <Filter filterPerson={filterPerson} onFilterChange={onFilterChange} />
       <h1>Add a new</h1>
       <PersonForm addPerson={addPerson} onNameChange={onNameChange} onPhoneChange={onPhoneChange} newName={newName} newPhone={newPhone} />
