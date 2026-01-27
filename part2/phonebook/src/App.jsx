@@ -28,15 +28,28 @@ const App = () => {
   const onNameChange = (e) => setNewName(e.target.value)
   const onPhoneChange = (e) => setNewPhone(e.target.value)
   const onFilterChange = (e) => setFilterPerson(e.target.value)
+  const updateData = (id, updatedPerson) => {
+    personService
+      .changeData(id, updatedPerson)
+      .then(() => setPersons(prev => prev.map(p => p.id === id ? updatedPerson : p)))
+  }
+
+  //Use for delete data
+  const handleDeletePerson = (person) => {
+    if (confirm(`Delete ${person.name}?`)) {
+      deleteTheData(person.id)
+    }
+  }
+  const deleteTheData = (id) => {
+    personService
+      .deleteData(id)
+      .then(() => setPersons(prev => prev.filter(person => person.id !== id)))
+  }
 
   const addPerson = (event) => {
     const existingPerson = persons.find(person => person.name.trim() === newName)
     event.preventDefault()
-    const updateData = (id, updatedPerson) => {
-      personService
-        .changeData(id, updatedPerson)
-        .then(() => setPersons(prev => prev.map(p => p.id === id ? updatedPerson : p)))
-    }
+
     if (existingPerson) {
       if (confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const updatedPerson = {
@@ -51,7 +64,6 @@ const App = () => {
         setNewName("")
         setNewPhone("")
       }
-      //get the number user type => print windown confirm & put the data (BE) then change to new number:
     }
 
     //Person not exist => Create new person object
@@ -79,7 +91,7 @@ const App = () => {
       <h1>Add a new</h1>
       <PersonForm addPerson={addPerson} onNameChange={onNameChange} onPhoneChange={onPhoneChange} newName={newName} newPhone={newPhone} />
       <h2>Numbers</h2>
-      <Person filteredPerson={filteredPerson} p={setPersons} />
+      <Person filteredPerson={filteredPerson} onDelete={handleDeletePerson} />
     </div>
   )
 }
