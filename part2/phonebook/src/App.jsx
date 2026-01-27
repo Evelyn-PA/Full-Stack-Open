@@ -46,6 +46,13 @@ const App = () => {
       .then(() => setPersons(prev => prev.filter(person => person.id !== id)))
   }
 
+  // Set the notification
+  const showMessage = (text, duration = 3000) => {
+    setMessage(text)
+    setTimeout(() => setMessage(null), duration)
+  }
+
+  //Add person
   const addPerson = (event) => {
     const existingPerson = persons.find(person => person.name.trim() === newName)
     event.preventDefault()
@@ -57,12 +64,9 @@ const App = () => {
           number: newPhone
         }
         updateData(existingPerson.id, updatedPerson)
-        setMessage(`The number of ${existingPerson.name} changed to ${newPhone}`)
-        setTimeout(() => {
-          setMessage(null)
-        }, 1000)
         setNewName("")
         setNewPhone("")
+        showMessage(`The number of ${existingPerson.name} changed to ${newPhone}`)
       }
     }
 
@@ -75,10 +79,7 @@ const App = () => {
           setPersons(prev => prev.concat(returnedPerson))
           setNewName("")
           setNewPhone("")
-          setMessage(`Added ${newPerson.name}`)
-          setTimeout(() => {
-            setMessage(null)
-          }, 1000)
+          showMessage(`Added ${newPerson.name}`)
         })
     }
   }
