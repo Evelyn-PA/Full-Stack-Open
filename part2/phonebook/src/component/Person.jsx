@@ -1,5 +1,3 @@
-import personService from "../services/person"
-
 export default function Person({ filteredPerson, onDelete }) {
 
     

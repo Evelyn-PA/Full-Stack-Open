@@ -34,9 +34,9 @@ const App = () => {
     personService
       .changeData(id, updatedPerson)
       .then(() => setPersons(prev => prev.map(p => p.id === id ? updatedPerson : p)))
-      .catch(() =>{
-        showMessage(`Information of ${updatedPerson.name} has already been removed from server `)
-        setPersons(prev=>prev.filter(n=>n.id !== id))
+      .catch(() => {
+        showMessage(`Information of ${updatedPerson.name} has already been removed from server `, 3000, "red")
+        setPersons(prev => prev.filter(n => n.id !== id))
       })
   }
 
@@ -53,8 +53,8 @@ const App = () => {
   }
 
   // Set the notification
-  const showMessage = (text, duration = 3000) => {
-    setMessage(text)
+  const showMessage = (text, duration = 3000, color = "green") => {
+    setMessage({ text, color })
     setTimeout(() => setMessage(null), duration)
   }
 
