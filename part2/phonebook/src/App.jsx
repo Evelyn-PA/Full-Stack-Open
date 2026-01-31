@@ -28,10 +28,16 @@ const App = () => {
   const onNameChange = (e) => setNewName(e.target.value)
   const onPhoneChange = (e) => setNewPhone(e.target.value)
   const onFilterChange = (e) => setFilterPerson(e.target.value)
+
+  //Update the data
   const updateData = (id, updatedPerson) => {
     personService
       .changeData(id, updatedPerson)
       .then(() => setPersons(prev => prev.map(p => p.id === id ? updatedPerson : p)))
+      .catch(() =>{
+        showMessage(`Information of ${updatedPerson.name} has already been removed from server `)
+        setPersons(prev=>prev.filter(n=>n.id !== id))
+      })
   }
 
   //Use for delete data
@@ -63,6 +69,7 @@ const App = () => {
           ...existingPerson,
           number: newPhone
         }
+        //Adjust the data 
         updateData(existingPerson.id, updatedPerson)
         setNewName("")
         setNewPhone("")
