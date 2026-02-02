@@ -17,8 +17,8 @@ export default function Country({ country, filterInput }) {
             return (
                 <>
                     <h1>{c.name.common}</h1>
-                    <h3>Capital: {c.capital}</h3>
-                    <h3>Area: {c.area}</h3>
+                    <p>Capital: {c.capital}</p>
+                    <p>Area: {c.area}</p>
                     <h3>Languages</h3>
                     <ul >{Object.values(c.languages).map((lang) =>
                     (
