@@ -1,5 +1,6 @@
 import Content from "./content";
 import { useState } from "react";
+import ShowButton from "./showButton";
 
 
 export default function Country({ country, filterInput }) {
@@ -11,9 +12,9 @@ export default function Country({ country, filterInput }) {
             return country.map((c) => (
                 <div key={c.name.common}>
                     <span>{c.name.common} </span>
-                    <button onClick={() => setSelectedCountry(selectedCountry === c ? null : c)}>
-                        {selectedCountry === c ? "Hide" : "Show"}
-                    </button>
+                    <ShowButton country={c}
+                        selectedCountry={selectedCountry}
+                        setSelectedCountry={setSelectedCountry} />
                     {selectedCountry === c && <Content country={c} />}
                 </div>
             ));
