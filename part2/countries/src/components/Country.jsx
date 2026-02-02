@@ -1,35 +1,27 @@
-import ShowButton from "./showButton";
+import Content from "./content";
+import { useState } from "react";
+
+
 export default function Country({ country, filterInput }) {
+    const [selectedCountry, setSelectedCountry] = useState(null)
     const showingContent = () => {
         if (country.length > 10 && filterInput !== "") {
-            return <p>Too many matches, specify another filter</p>
+            return <p>Too many matches, specify another filter</p>;
+        } else if (country.length > 1 && country.length <= 10) {
+            return country.map((c) => (
+                <div key={c.name.common}>
+                    <span>{c.name.common} </span>
+                    <button onClick={() => setSelectedCountry(selectedCountry === c ? null : c)}>
+                        {selectedCountry === c ? "Hide" : "Show"}
+                    </button>
+                    {selectedCountry === c && <Content country={c} />}
+                </div>
+            ));
+
+        } else if (country.length === 1) {
+            return <Content country={country[0]} />;
         }
-        else if (country.length > 1 && country.length <= 10) {
-            return (
-                country.map((c) => (
-                    <div key={c.name.common}>
-                        <span>{c.name.common} </span>
-                        <ShowButton country={country}/>
-                    </div>
-                ))
-            )
-        }
-        else if (country.length === 1) {
-            const c = country[0];
-            return (
-                <>
-                    <h1>{c.name.common}</h1>
-                    <p>Capital: {c.capital}</p>
-                    <p>Area: {c.area}</p>
-                    <h3>Languages</h3>
-                    <ul >{Object.values(c.languages).map((lang) =>
-                    (
-                        <li key={lang}>{lang}</li>
-                    ))}</ul>
-                    <img src={c.flags.png} alt={c.flags.alt} />
-                </>
-            )
-        }
-    }
-    return showingContent()
+    };
+
+    return showingContent();
 }
