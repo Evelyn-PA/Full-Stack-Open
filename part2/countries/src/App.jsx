@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import countriesService from "./services/countries_api"
 import CountryForm from "./components/countriesFilter"
 import Country from "./components/Country"
+import Weather from "./services/weather"
 const App = () => {
   const [country, setCountry] = useState([])
   const [filterCountry, setFilterCountry] = useState('')

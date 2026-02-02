@@ -1,3 +1,4 @@
+import Weather from "./weather";
 export default function Content({ country }) {
     const c = country;
     return (
@@ -11,6 +12,7 @@ export default function Content({ country }) {
                 <li key={lang}>{lang}</li>
             ))}</ul>
             <img src={c.flags.png} alt={c.flags.alt} />
+            <Weather name={c.capital[0]} lat={c.capitalInfo.latlng[0]} lon={c.capitalInfo.latlng[1]} />
         </>
     )
 
