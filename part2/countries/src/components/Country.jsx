@@ -1,3 +1,4 @@
+import ShowButton from "./showButton";
 export default function Country({ country, filterInput }) {
     const showingContent = () => {
         if (country.length > 10 && filterInput !== "") {
@@ -7,7 +8,8 @@ export default function Country({ country, filterInput }) {
             return (
                 country.map((c) => (
                     <div key={c.name.common}>
-                        <p>{c.name.common}</p>
+                        <span>{c.name.common} </span>
+                        <ShowButton country={country}/>
                     </div>
                 ))
             )
