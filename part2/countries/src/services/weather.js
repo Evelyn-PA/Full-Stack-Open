@@ -4,7 +4,12 @@ const baseURL = "https://api.openweathermap.org/data/2.5/weather"
 
 const getAllWeather = (lat, lon) => {
     const request = axios.get(`${baseURL}?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`)
-    return request.then(response => response.data)
+    return request
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Weather API error:', error)
+            throw error
+        })
 }
 export default {
     getAllWeather: getAllWeather

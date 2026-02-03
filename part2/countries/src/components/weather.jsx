@@ -11,10 +11,14 @@ export default function Weather({name,lat,lon}) {
     }, [lat, lon])
 
     return(
+        weather === null ? <p>Loading the data....</p> : (
         <>
         <h2>Weather in {name}</h2>
-        <p>Temerature {weather&& weather.main.temp} Celsius</p>
+        <p>Temperature {weather.main.temp} Celsius</p>
+        <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt="weather icon"/>
+        <p>Wind {weather.wind.speed} m/s</p>
         </>
+        )
     )
 }
 
