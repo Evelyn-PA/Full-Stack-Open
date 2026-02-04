@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+//Access the data easily (Convert raw JSON to JS object)
+app.use(express.json())
 let notes = [
     {
         id: "1",
@@ -31,6 +33,13 @@ app.delete('/api/notes/:id', (req, res) => {
     const id = req.params.id
     notes = notes.filter(note => note.id !== id)
     res.status(204).end()
+})
+
+//Add the data using POST
+app.post('/api/notes', (req,res) =>{
+    const note = req.body
+    console.log(note)
+    res.json(note)
 })
 
 const PORT = 3001
