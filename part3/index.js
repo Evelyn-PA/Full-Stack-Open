@@ -25,6 +25,7 @@ const person = [
     }
 ]
 
+//Get the info
 app.get("/info", (req, res) => {
     const total = person.length
     const CurrentTime = new Date()
@@ -35,9 +36,30 @@ app.get("/info", (req, res) => {
     )
 })
 
+//Get the API/persons
 app.get("/api/persons", (req, res) => {
     res.json(person)
 })
+
+//Get data by ID
+app.get("/api/persons/:id", (req, res) => {
+    const id = req.params.id
+    const personData = person.find(p => p.id === id)
+
+    if (personData) {
+        res.json(personData)
+    }
+    else {
+        res.status(404).end()
+    }
+})
+
+// //Post the data
+// app.post("/api/persons/:id", (req, res)=>{
+//     const personData = req.body
+//     console.log(personData)
+//     resizeBy.json(personData)
+// })
 
 PORT = 3001
 app.listen(PORT, () => {
