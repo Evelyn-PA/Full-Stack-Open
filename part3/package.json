@@ -1,15 +1,15 @@
 {
   "name": "part3",
   "version": "1.0.0",
-  "description": "demo",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js"
   },
-  "author": "Evelyn Ng",
+  "author": "Evelyn",
   "license": "MIT",
+  "description": "",
   "dependencies": {
     "express": "^5.2.1"
   }

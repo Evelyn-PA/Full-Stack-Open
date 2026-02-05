@@ -1,48 +1,38 @@
 const express = require('express')
 const app = express()
 
-//Access the data easily (Convert raw JSON to JS object)
-app.use(express.json())
-let notes = [
-    {
-        id: "1",
-        content: "HTML is easy",
-        important: true
+//The Data
+const person = [
+    { 
+      "id": "1",
+      "name": "Arto Hellas", 
+      "number": "040-123456"
     },
-    {
-        id: "4",
-        content: "Browser can execute only JavaScript",
-        important: false
+    { 
+      "id": "2",
+      "name": "Ada Lovelace", 
+      "number": "39-44-5323523"
     },
-    {
-        id: "3",
-        content: "GET and POST are the most important methods of HTTP protocol",
-        important: true
+    { 
+      "id": "3",
+      "name": "Dan Abramov", 
+      "number": "12-43-234345"
+    },
+    { 
+      "id": "4",
+      "name": "Mary Poppendieck", 
+      "number": "39-23-6423122"
     }
 ]
 
-app.get('/', (req, res) => {
-    res.send("<h1>Hello World!</h1>")
+app.get("/", (req, res)=>{
+    res.send("<h1>Hello Welcome to my data</h1>")
 })
 
-app.get('/api/notes',(req, res) =>{
-    res.json(notes)
+app.get("/api/persons", (req, res) =>{
+    res.json(person)
 })
 
-app.delete('/api/notes/:id', (req, res) => {
-    const id = req.params.id
-    notes = notes.filter(note => note.id !== id)
-    res.status(204).end()
-})
-
-//Add the data using POST
-app.post('/api/notes', (req,res) =>{
-    const note = req.body
-    console.log(note)
-    res.json(note)
-})
-
-const PORT = 3001
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-})
+PORT = 3001
+app.listen(PORT, ()=>{
+    console.log(`Server running at http://localhost:${PORT}`)})
