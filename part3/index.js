@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 //The Data
-const person = [
+let person = [
     {
         "id": "1",
         "name": "Arto Hellas",
@@ -52,6 +52,13 @@ app.get("/api/persons/:id", (req, res) => {
     else {
         res.status(404).end()
     }
+})
+
+//Delete the data by ID
+app.delete("/api/persons/:id", (req, res)=>{
+    const id = req.params.id
+    person = person.filter(p=>p.id !== id)
+    res.status(204).end()
 })
 
 // //Post the data
