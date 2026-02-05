@@ -58,6 +58,7 @@ app.get("/api/persons/:id", (req, res) => {
 //Delete the data by ID
 app.delete("/api/persons/:id", (req, res) => {
     const id = req.params.id
+    console.log(`Total persons: ${person.length}`)
     person = person.filter(p => p.id !== id)
     res.status(204).end()
 })
@@ -65,7 +66,18 @@ app.delete("/api/persons/:id", (req, res) => {
 //Post the data
 app.post("/api/persons/", (req, res) => {
     const personData = req.body
-    personData.id = Math.floor(Math.random() * 46) + 5
+    personData.id = String(Math.floor(Math.random() * 46) + 5)
+    if (person.some(p=>p.name === personData.name)) {
+        return res.status(400).json({
+            error: "Name must be unique"
+        })
+    }
+
+    else if (!personData.name || !personData.number) {
+        return res.status(400).json({
+            error: "The name or number is missing"
+        })
+    }
     person = person.concat(personData)
     res.json(personData)
 })
