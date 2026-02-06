@@ -1,4 +1,5 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 //The Data
@@ -25,6 +26,7 @@ let person = [
     }
 ]
 app.use(express.json())
+app.use(morgan('tiny'))
 
 //Get the info
 app.get("/info", (req, res) => {
@@ -58,7 +60,6 @@ app.get("/api/persons/:id", (req, res) => {
 //Delete the data by ID
 app.delete("/api/persons/:id", (req, res) => {
     const id = req.params.id
-    console.log(`Total persons: ${person.length}`)
     person = person.filter(p => p.id !== id)
     res.status(204).end()
 })
