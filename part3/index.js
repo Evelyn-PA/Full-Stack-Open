@@ -26,8 +26,17 @@ let person = [
     }
 ]
 app.use(express.json())
-app.use(morgan('tiny'))
+// app.use(morgan('tiny')) //Morgan Middleware 
 
+//Morgan Token
+morgan.token('type', (req, res) => {
+    if (req.method === "POST") {
+        const { id, ...rest } = req.body
+        return JSON.stringify(rest)
+    }
+    return ""
+})
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
 //Get the info
 app.get("/info", (req, res) => {
     const total = person.length
@@ -68,7 +77,7 @@ app.delete("/api/persons/:id", (req, res) => {
 app.post("/api/persons/", (req, res) => {
     const personData = req.body
     personData.id = String(Math.floor(Math.random() * 46) + 5)
-    if (person.some(p=>p.name === personData.name)) {
+    if (person.some(p => p.name === personData.name)) {
         return res.status(400).json({
             error: "Name must be unique"
         })
