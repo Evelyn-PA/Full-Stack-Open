@@ -1,6 +1,5 @@
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors')
 const app = express()
 
 //The Data
@@ -29,9 +28,6 @@ let person = [
 app.use(express.json())
 // app.use(morgan('tiny')) //Morgan Middleware 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
-
-//Use CORS 
-app.use(cors())
 
 //Use static
 app.use(express.static('dist'))

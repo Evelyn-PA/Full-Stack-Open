@@ -1,7 +1,6 @@
-DELETE http://localhost:3001/api/persons/10
-
+DELETE http://localhost:3001/api/persons/23
 ###
-Get http://localhost:3001/api/persons
+Get http://localhost:3001/api/persons/
 
 ### 
 POST http://localhost:3001/api/persons
@@ -9,5 +8,5 @@ Content-Type: application/json
 
 {
     "name": "Evelyn",
-    "number": "12-43-23435"
+    "number": "213-5894"
 }
