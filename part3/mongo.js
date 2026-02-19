@@ -14,7 +14,7 @@ const url = `mongodb+srv://phuonganhnguyen6165_db_user:${password}@cluster0.qp7s
 
 mongoose.set('strictQuery', false)
 
-mongoose.connect(url, { family: 4 })  //Always use IPv4
+mongoose.connect(url, { family: 4 })  //Always use IPv4 
 
 const phoneBookSchema = new mongoose.Schema({
     id: String,
@@ -25,7 +25,7 @@ const phoneBookSchema = new mongoose.Schema({
 const phoneBook = mongoose.model("phoneBook", phoneBookSchema)
 
 
-
+// If phone book length = 3 => print out the phonebook result
 if (process.argv.length === 3) {
     console.log("Phonebook:")
     phoneBook.find({}).then(result => {
@@ -35,6 +35,8 @@ if (process.argv.length === 3) {
         mongoose.connection.close()
     })
 }
+
+//If phonebook argv = 5 => Add the input to the database
 else if (process.argv.length === 5) {
     const phonebook = new phoneBook({
         id: "1",
