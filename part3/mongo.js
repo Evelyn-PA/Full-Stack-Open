@@ -16,19 +16,20 @@ mongoose.set('strictQuery', false)
 
 mongoose.connect(url, { family: 4 })  //Always use IPv4 
 
-const phoneBookSchema = new mongoose.Schema({
+//Create the database schema
+const Phonebookschema = new mongoose.Schema({
     id: String,
     name: String,
     number: String
 })
 
-const phoneBook = mongoose.model("phoneBook", phoneBookSchema)
+const PhoneBook = mongoose.model("PhoneBook", Phonebookschema)
 
 
 // If phone book length = 3 => print out the phonebook result
 if (process.argv.length === 3) {
     console.log("Phonebook:")
-    phoneBook.find({}).then(result => {
+    PhoneBook.find({}).then(result => {
         result.forEach(person => {
             console.log(`${person.name} ${person.number}`)
         })
@@ -38,7 +39,7 @@ if (process.argv.length === 3) {
 
 //If phonebook argv = 5 => Add the input to the database
 else if (process.argv.length === 5) {
-    const phonebook = new phoneBook({
+    const phonebook = new PhoneBook({
         id: "1",
         name: name,
         number: number
