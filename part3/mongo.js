@@ -5,8 +5,6 @@ if (process.argv.length < 3) {
     process.exit(1)
 }
 
-
-
 const password = process.argv[2]
 const name = process.argv[3]
 const number = process.argv[4]
@@ -18,7 +16,6 @@ mongoose.connect(url, { family: 4 })  //Always use IPv4
 
 //Create the database schema
 const Phonebookschema = new mongoose.Schema({
-    id: String,
     name: String,
     number: String
 })

@@ -1,7 +1,8 @@
+require ('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
-
+const PhoneBook = require('./models/phonebook')
 //The Data
 let person = [
     {
@@ -25,6 +26,8 @@ let person = [
         "number": "39-23-6423122"
     }
 ]
+
+
 app.use(express.json())
 // app.use(morgan('tiny')) //Morgan Middleware 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type'))
@@ -41,7 +44,6 @@ morgan.token('type', (req, res) => {
     return ""
 })
 
-
 //Get the info
 app.get("/info", (req, res) => {
     const total = person.length
@@ -55,7 +57,9 @@ app.get("/info", (req, res) => {
 
 //Get the API/persons
 app.get("/api/persons", (req, res) => {
-    res.json(person)
+    PhoneBook.find({}).then(person => {
+        res.json(person)
+    })
 })
 
 //Get data by ID
