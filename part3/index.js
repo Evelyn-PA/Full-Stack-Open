@@ -1,32 +1,8 @@
-require ('dotenv').config()
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const PhoneBook = require('./models/phonebook')
-//The Data
-let person = [
-    {
-        "id": "1",
-        "name": "Arto Hellas",
-        "number": "040-123456"
-    },
-    {
-        "id": "2",
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523"
-    },
-    {
-        "id": "3",
-        "name": "Dan Abramov",
-        "number": "12-43-234345"
-    },
-    {
-        "id": "4",
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122"
-    }
-]
-
 
 app.use(express.json())
 // app.use(morgan('tiny')) //Morgan Middleware 
@@ -45,8 +21,8 @@ morgan.token('type', (req, res) => {
 })
 
 //Get the info
-app.get("/info", (req, res) => {
-    const total = person.length
+app.get("/info", async(req, res) => {
+    const total = await PhoneBook.countDocuments({ name: { $exists: true } })
     const CurrentTime = new Date()
     res.send(
         `<p>Phonebook has info for ${total} people </p>
@@ -64,41 +40,62 @@ app.get("/api/persons", (req, res) => {
 
 //Get data by ID
 app.get("/api/persons/:id", (req, res) => {
-    const id = req.params.id
-    const personData = person.find(p => p.id === id)
-
-    if (personData) {
-        res.json(personData)
-    }
-    else {
-        res.status(404).end()
-    }
+    PhoneBook.findById(req.params.id).then(personSaved => {
+        if (personSaved) {
+            res.json(personSaved)
+        }
+        else {
+            res.status(404).end()
+        }
+    })
+        .catch(error => {
+            res.status(400).send({ error: "Id not found" })
+        })
 })
 
 //Delete the data by ID
 app.delete("/api/persons/:id", (req, res) => {
-    const id = req.params.id
-    person = person.filter(p => p.id !== id)
-    res.status(204).end()
+    PhoneBook.findByIdAndDelete(req.params.id).then(result => {
+        if (result) {
+            res.status(204).end()
+        }
+    })
+        .catch(error => {
+            console.error(error)
+            res.status(400).send({ error: "Error with the ID " })
+        })
 })
 
 //Post the data
 app.post("/api/persons/", (req, res) => {
     const personData = req.body
-    personData.id = String(Math.floor(Math.random() * 46) + 5)
-    if (person.some(p => p.name === personData.name)) {
-        return res.status(400).json({
-            error: "Name must be unique"
-        })
-    }
 
-    else if (!personData.name || !personData.number) {
+    if (!personData.name || !personData.number) {
         return res.status(400).json({
             error: "The name or number is missing"
         })
     }
-    person = person.concat(personData)
-    res.json(personData)
+
+    PhoneBook.findOne({ name: personData.name }).then(existingPerson => {
+        if (existingPerson) {
+            return res.status(400).json({
+                error: "Name must be unique"
+            })
+        }
+
+        //Create new instance 
+        const personToSave = new PhoneBook({
+            name: personData.name,
+            number: personData.number
+        })
+
+        //Save to the database
+        personToSave.save().then(
+            savedPerson => {
+                res.json(savedPerson)
+            }
+        )
+    })
 })
 
 const PORT = process.env.PORT || 3001
