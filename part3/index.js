@@ -21,20 +21,25 @@ morgan.token('type', (req, res) => {
 })
 
 //Get the info
-app.get("/info", async(req, res) => {
-    const total = await PhoneBook.countDocuments({ name: { $exists: true } })
-    const CurrentTime = new Date()
-    res.send(
-        `<p>Phonebook has info for ${total} people </p>
+app.get("/info", (req, res) => {
+    PhoneBook.countDocuments({}).then(
+        total => {
+            const CurrentTime = new Date()
+            res.send(
+                `<p>Phonebook has info for ${total} people </p>
         <p>${CurrentTime}</p>
-       `
-    )
+       `)
+        })
+        .catch(error=>{
+            console.log(error)
+            res.status(500).send({error: "Server error while counting"})
+        })
 })
 
 //Get the API/persons
 app.get("/api/persons", (req, res) => {
-    PhoneBook.find({}).then(person => {
-        res.json(person)
+    PhoneBook.find({}).then(persons => {
+        res.json(persons)
     })
 })
 
@@ -49,25 +54,23 @@ app.get("/api/persons/:id", (req, res) => {
         }
     })
         .catch(error => {
-            res.status(400).send({ error: "Id not found" })
+            res.status(400).send({ error: "malformatted id" })
         })
 })
 
 //Delete the data by ID
 app.delete("/api/persons/:id", (req, res) => {
-    PhoneBook.findByIdAndDelete(req.params.id).then(result => {
-        if (result) {
-            res.status(204).end()
-        }
+    PhoneBook.findByIdAndDelete(req.params.id).then(() => {
+        res.status(204).end()
     })
         .catch(error => {
             console.error(error)
-            res.status(400).send({ error: "Error with the ID " })
+            res.status(400).send({ error: "malformatted id" })
         })
 })
 
 //Post the data
-app.post("/api/persons/", (req, res) => {
+app.post("/api/persons", async (req, res) => {
     const personData = req.body
 
     if (!personData.name || !personData.number) {
@@ -75,28 +78,26 @@ app.post("/api/persons/", (req, res) => {
             error: "The name or number is missing"
         })
     }
-
-    PhoneBook.findOne({ name: personData.name }).then(existingPerson => {
+    try{
+        const existingPerson = await PhoneBook.findOne({name: personData.name})
         if (existingPerson) {
             return res.status(400).json({
                 error: "Name must be unique"
             })
         }
-
-        //Create new instance 
         const personToSave = new PhoneBook({
             name: personData.name,
             number: personData.number
         })
 
-        //Save to the database
-        personToSave.save().then(
-            savedPerson => {
-                res.json(savedPerson)
-            }
-        )
-    })
+        const savedPerson = await personToSave.save()
+        res.json(savedPerson)
+    }
+    catch (error) {
+        res.status(500).json({error: "Server error"})
+    }
 })
+
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
