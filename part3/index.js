@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const PhoneBook = require('./models/phonebook')
+const errorHandler = require('./middleware/errorHandler')
 
 app.use(express.json())
 // app.use(morgan('tiny')) //Morgan Middleware 
@@ -30,10 +31,7 @@ app.get("/info", (req, res) => {
         <p>${CurrentTime}</p>
        `)
         })
-        .catch(error=>{
-            console.log(error)
-            res.status(500).send({error: "Server error while counting"})
-        })
+        .catch(error => next(error))
 })
 
 //Get the API/persons
@@ -53,20 +51,15 @@ app.get("/api/persons/:id", (req, res) => {
             res.status(404).end()
         }
     })
-        .catch(error => {
-            res.status(400).send({ error: "malformatted id" })
-        })
+        .catch(error => next(error))
 })
 
 //Delete the data by ID
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/api/persons/:id", (req, res, next) => {
     PhoneBook.findByIdAndDelete(req.params.id).then(() => {
         res.status(204).end()
     })
-        .catch(error => {
-            console.error(error)
-            res.status(400).send({ error: "malformatted id" })
-        })
+        .catch(error => next(error))
 })
 
 //Post the data
@@ -94,10 +87,12 @@ app.post("/api/persons", async (req, res) => {
         res.json(savedPerson)
     }
     catch (error) {
-        res.status(500).json({error: "Server error"})
+        next(error)
     }
 })
 
+//Use error hanlder
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
