@@ -15,7 +15,7 @@ app.use(express.static('dist'))
 //Morgan Token
 morgan.token('type', (req, res) => {
     if (req.method === "POST") {
-        return JSON.stringify(rest)
+        return JSON.stringify(req.body)
     }
     return ""
 })
@@ -84,11 +84,6 @@ app.post("/api/persons", async (req, res, next) => {
     }
     try {
         const existingPerson = await PhoneBook.findOne({ name: personData.name })
-        if (existingPerson) {
-            return res.status(400).json({
-                error: "Name must be unique"
-            })
-        }
         const personToSave = new PhoneBook({
             name: personData.name,
             number: personData.number
@@ -97,6 +92,26 @@ app.post("/api/persons", async (req, res, next) => {
         const savedPerson = await personToSave.save()
         res.json(savedPerson)
     }
+    catch (error) {
+        next(error)
+    }
+})
+
+//Put (Change/Edit) the data
+app.put("/api/persons/:id", async (req, res, next) => {
+    const { name, number } = req.body
+    try {
+        const findPerson = await PhoneBook.findById(req.params.id)
+        if (!findPerson) {
+            return res.status(404).end()
+        }
+        findPerson.number = number
+        findPerson.name = name
+
+        const updatedPerson = await findPerson.save()
+        res.json(updatedPerson)
+    }
+
     catch (error) {
         next(error)
     }
