@@ -73,7 +73,7 @@ app.delete("/api/persons/:id", async (req, res, next) => {
     }
 })
 
-//Post the data
+//Add the data
 app.post("/api/persons", async (req, res, next) => {
     const personData = req.body
 
@@ -97,7 +97,7 @@ app.post("/api/persons", async (req, res, next) => {
     }
 })
 
-//Put (Change/Edit) the data
+//Put (Change/Update) the data
 app.put("/api/persons/:id", async (req, res, next) => {
     const { name, number } = req.body
     try {
