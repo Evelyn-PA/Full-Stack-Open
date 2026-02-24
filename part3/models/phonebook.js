@@ -4,23 +4,27 @@ mongoose.set('strictQuery', false)
 const url = process.env.MONGODB_URI
 
 mongoose.connect(url, { family: 4 })  //Always use IPv4 
-    .then(result =>{
+    .then(result => {
         console.log("Connected to MongoDB")
     })
 
-    .catch(error=>{
+    .catch(error => {
         console.log("Error connecting to MongoDB: ", error.message)
     })
 
 //Create the database schema
 const Phonebookschema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true,
+        minLength: 4
+    },
     number: String
 })
 
 //Handle and modify the schema to clean up the data (remove the __v)
 Phonebookschema.set('toJSON', {
-    transform: (document, returnedObject) =>{
+    transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
         delete returnedObject.__v

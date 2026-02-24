@@ -83,7 +83,6 @@ app.post("/api/persons", async (req, res, next) => {
         })
     }
     try {
-        const existingPerson = await PhoneBook.findOne({ name: personData.name })
         const personToSave = new PhoneBook({
             name: personData.name,
             number: personData.number

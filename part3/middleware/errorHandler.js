@@ -3,12 +3,14 @@ const errorHandler = (error, _, response, next) => {
     if (error.name === 'castError') {
         return response.status(400).send({ error: "malformatted id" })
     }
+    else if(error.name === "ValidationError"){
+        return response.status(400).json({error: error.message})
+    }
     next(error)
 }
 
 const unknownEndpoint = (_, res) => {
     res.status(404).send({ error: "Unknown Endpoint!" })
 }
-
 
 export { errorHandler, unknownEndpoint }
