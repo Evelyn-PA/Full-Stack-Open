@@ -1,6 +1,6 @@
 const errorHandler = (error, _, response, next) => {
     console.error(error.message)
-    if (error.name === 'castError') {
+    if (error.name === 'CastError') {
         return response.status(400).send({ error: "malformatted id" })
     }
     else if(error.name === "ValidationError"){

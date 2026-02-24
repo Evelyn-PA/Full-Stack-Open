@@ -17,7 +17,7 @@ const Phonebookschema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minLength: 4
+        minLength: 3
     },
     number: String
 })
