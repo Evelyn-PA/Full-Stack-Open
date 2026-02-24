@@ -91,7 +91,7 @@ const App = () => {
         .catch(error => {
           const errorMessage = error.response.data.error
           showMessage(errorMessage, 5000, "red")
-          console.log('Backend sent this error:', errorMessage)
+          console.log('Person validation failed:', errorMessage)
         })
     }
   }
