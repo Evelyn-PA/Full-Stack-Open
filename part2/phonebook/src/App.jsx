@@ -34,9 +34,14 @@ const App = () => {
     personService
       .changeData(id, updatedPerson)
       .then(() => setPersons(prev => prev.map(p => p.id === id ? updatedPerson : p)))
-      .catch(() => {
-        showMessage(`Information of ${updatedPerson.name} has already been removed from server `, 3000, "red")
-        setPersons(prev => prev.filter(n => n.id !== id))
+      .catch(error => {
+        if (error.response?.data?.error) {
+          showMessage(error.response.data.error, 5000, "red")
+        } else {
+          showMessage(`Information of ${updatedPerson.name} has already been removed from server `, 3000, "red")
+          setPersons(prev => prev.filter(n => n.id !== id))
+        }
+
       })
   }
 
