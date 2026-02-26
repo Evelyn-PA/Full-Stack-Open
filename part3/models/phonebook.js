@@ -19,7 +19,15 @@ const Phonebookschema = new mongoose.Schema({
         required: true,
         minLength: 3
     },
-    number: String
+    number: {
+        type: String,
+        required: true,
+        minLength: 8,
+        validate: function(v){
+            return /^\d{2,3}-\d{5,}$/.test(v) 
+        },
+        message: props => `${props.value} is not a valid phone number`
+    }
 })
 
 //Handle and modify the schema to clean up the data (remove the __v)
