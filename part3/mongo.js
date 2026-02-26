@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
-    console.log("give password as argument & data")
+    console.log('give password as argument & data')
     process.exit(1)
 }
 
@@ -12,7 +12,7 @@ const url = `mongodb+srv://phuonganhnguyen6165_db_user:${password}@cluster0.qp7s
 
 mongoose.set('strictQuery', false)
 
-mongoose.connect(url, { family: 4 })  //Always use IPv4 
+mongoose.connect(url, { family: 4 })  //Always use IPv4
 
 //Create the database schema
 const Phonebookschema = new mongoose.Schema({
@@ -20,12 +20,12 @@ const Phonebookschema = new mongoose.Schema({
     number: String
 })
 
-const PhoneBook = mongoose.model("PhoneBook", Phonebookschema)
+const PhoneBook = mongoose.model('PhoneBook', Phonebookschema)
 
 
 // If phone book length = 3 => print out the phonebook result
 if (process.argv.length === 3) {
-    console.log("Phonebook:")
+    console.log('Phonebook:')
     PhoneBook.find({}).then(result => {
         result.forEach(person => {
             console.log(`${person.name} ${person.number}`)
@@ -37,13 +37,13 @@ if (process.argv.length === 3) {
 //If phonebook argv = 5 => Add the input to the database
 else if (process.argv.length === 5) {
     const phonebook = new PhoneBook({
-        id: "1",
+        id: '1',
         name: name,
         number: number
     })
 
-    phonebook.save().then(result => {
+    phonebook.save().then(() => {
         console.log(`Added ${name} and ${number} to phonebook`)
         mongoose.connection.close()
-    });
+    })
 }

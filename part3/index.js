@@ -13,15 +13,15 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :t
 app.use(express.static('dist'))
 
 //Morgan Token
-morgan.token('type', (req, res) => {
-    if (req.method === "POST") {
+morgan.token('type', (req) => {
+    if (req.method === 'POST') {
         return JSON.stringify(req.body)
     }
-    return ""
+    return ''
 })
 
 //Get the info
-app.get("/info", async (req, res, next) => {
+app.get('/info', async (__, res, next) => {
     try {
         const total = await PhoneBook.countDocuments({})
         const CurrentTime = new Date()
@@ -36,7 +36,7 @@ app.get("/info", async (req, res, next) => {
 })
 
 //Get the API/persons
-app.get("/api/persons", async (req, res, next) => {
+app.get('/api/persons', async (__, res, next) => {
     try {
         const persons = await PhoneBook.find({})
         res.json(persons)
@@ -47,7 +47,7 @@ app.get("/api/persons", async (req, res, next) => {
 })
 
 //Get data by ID
-app.get("/api/persons/:id", async (req, res, next) => {
+app.get('/api/persons/:id', async (req, res, next) => {
     try {
         const personSaved = await PhoneBook.findById(req.params.id)
         if (personSaved) {
@@ -63,7 +63,7 @@ app.get("/api/persons/:id", async (req, res, next) => {
 })
 
 //Delete the data by ID
-app.delete("/api/persons/:id", async (req, res, next) => {
+app.delete('/api/persons/:id', async (req, res, next) => {
     try {
         await PhoneBook.findByIdAndDelete(req.params.id)
         res.status(204).end()
@@ -74,12 +74,12 @@ app.delete("/api/persons/:id", async (req, res, next) => {
 })
 
 //Add the data
-app.post("/api/persons", async (req, res, next) => {
+app.post('/api/persons', async (req, res, next) => {
     const personData = req.body
 
     if (!personData.name || !personData.number) {
         return res.status(400).json({
-            error: "The name or number is missing"
+            error: 'The name or number is missing'
         })
     }
     try {
@@ -97,7 +97,7 @@ app.post("/api/persons", async (req, res, next) => {
 })
 
 //Put (Change/Update) the data
-app.put("/api/persons/:id", async (req, res, next) => {
+app.put('/api/persons/:id', async (req, res, next) => {
     const { name, number } = req.body
     try {
         const findPerson = await PhoneBook.findById(req.params.id)
