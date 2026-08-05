@@ -33,15 +33,14 @@ const App = () => {
   const updateData = (id, updatedPerson) => {
     personService
       .changeData(id, updatedPerson)
-      .then(() => setPersons(prev => prev.map(p => p.id === id ? updatedPerson : p)))
+      .then((personReturned =>{setPersons(prev => prev.map(p => p.id === id ? personReturned : p))}) )
       .catch(error => {
-        if (error.response?.data?.error) {
+        if (error.response.status === 400) {
           showMessage(error.response.data.error, 5000, "red")
         } else {
           showMessage(`Information of ${updatedPerson.name} has already been removed from server `, 3000, "red")
           setPersons(prev => prev.filter(n => n.id !== id))
         }
-
       })
   }
 
